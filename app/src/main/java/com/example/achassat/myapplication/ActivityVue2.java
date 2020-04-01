@@ -77,7 +77,19 @@ public class ActivityVue2  extends FragmentActivity implements OnMapReadyCallbac
 
         //Centre la camera sur la Rochelle
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.14, -1.16), 12.0f));
-
+        for(int i=0; i<trajectoire.size(); i++){
+            MarkerOptions markerOptions = new MarkerOptions();
+            LatLng latLng=new LatLng(trajectoire.get(i).getLatitude(), trajectoire.get(i).getLongitude());
+            markerOptions.position(latLng);
+            markers.add(map.addMarker(markerOptions));
+            if(lastPos!=null){
+                polylines.add(map.addPolyline(new PolylineOptions()
+                        .add(lastPos, latLng)
+                        .width(5)
+                        .color(Color.RED)));
+            }
+            lastPos = latLng;
+        }
         //Listener sur le clic sur la googleMap
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
